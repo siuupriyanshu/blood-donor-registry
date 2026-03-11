@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+
+<VBox xmlns="http://javafx.com/javafx"
+      xmlns:fx="http://javafx.com/fxml"
+      fx:controller="com.blooddonor.controller.DashboardController"
+      spacing="15" style="-fx-padding: 15;">
+
+    <Label text="Dashboard - Blood Donor Registry Statistics" style="-fx-font-size: 20; -fx-font-weight: bold;"/>
+
+    <Separator/>
+
+    <HBox spacing="20">
+        <!-- Total Donors Card -->
+        <VBox style="-fx-border-color: #cccccc; -fx-border-width: 1; -fx-padding: 15; -fx-border-radius: 5;" HBox.hgrow="ALWAYS">
+            <Label text="Total Donors" style="-fx-font-size: 14; -fx-font-weight: bold;"/>
+            <Label fx:id="totalDonorsLabel" text="0" style="-fx-font-size: 32; -fx-font-weight: bold; -fx-text-fill: #0066cc;"/>
+        </VBox>
+
+        <!-- Available Donors Card -->
+        <VBox style="-fx-border-color: #cccccc; -fx-border-width: 1; -fx-padding: 15; -fx-border-radius: 5;" HBox.hgrow="ALWAYS">
+            <Label text="Available Donors" style="-fx-font-size: 14; -fx-font-weight: bold;"/>
+            <Label fx:id="availableDonorsLabel" text="0" style="-fx-font-size: 32; -fx-font-weight: bold; -fx-text-fill: #00aa00;"/>
+        </VBox>
+
+        <!-- Total Donations Card -->
+        <VBox style="-fx-border-color: #cccccc; -fx-border-width: 1; -fx-padding: 15; -fx-border-radius: 5;" HBox.hgrow="ALWAYS">
+            <Label text="Total Donations" style="-fx-font-size: 14; -fx-font-weight: bold;"/>
+            <Label fx:id="totalDonationsLabel" text="0" style="-fx-font-size: 32; -fx-font-weight: bold; -fx-text-fill: #cc0000;"/>
+        </VBox>
+    </HBox>
+
+    <Separator/>
+
+    <!-- Blood Type Distribution -->
+    <VBox spacing="10">
+        <Label text="Donors by Blood Type" style="-fx-font-size: 14; -fx-font-weight: bold;"/>
+        <ListView fx:id="bloodTypeListView" prefHeight="200"/>
+    </VBox>
+
+    <Separator/>
+
+    <!-- Location Distribution -->
+    <VBox spacing="10">
+        <Label text="Donors by Location" style="-fx-font-size: 14; -fx-font-weight: bold;"/>
+        <ListView fx:id="locationListView" prefHeight="200"/>
+    </VBox>
+
+    <Button text="Refresh Statistics" onAction="#refreshStatistics" style="-fx-padding: 10;"/>
+
+</VBox>

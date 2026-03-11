@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+
+<VBox xmlns="http://javafx.com/javafx"
+      xmlns:fx="http://javafx.com/fxml"
+      fx:controller="com.blooddonor.controller.DonationHistoryController"
+      spacing="10" style="-fx-padding: 15;">
+
+    <Label text="Donation History & Records" style="-fx-font-size: 18; -fx-font-weight: bold;"/>
+
+    <Separator/>
+
+    <!-- Donor Selection Section -->
+    <VBox spacing="8" style="-fx-border-color: #eeeeee; -fx-border-width: 1; -fx-padding: 10; -fx-border-radius: 3;">
+        <Label text="Select Donor:" style="-fx-font-weight: bold;"/>
+        <HBox spacing="10">
+            <ComboBox fx:id="donorComboBox" prefWidth="250"/>
+            <Button text="Load History" onAction="#loadDonationHistory" style="-fx-padding: 8;"/>
+        </HBox>
+    </VBox>
+
+    <!-- Toolbar -->
+    <HBox spacing="10">
+        <Button text="Add New Donation" onAction="#handleAddDonation" style="-fx-padding: 8;"/>
+        <Button text="Delete Selected" onAction="#handleDeleteRecord" style="-fx-padding: 8;"/>
+        <Button text="Refresh" onAction="#refreshHistory" style="-fx-padding: 8;"/>
+    </HBox>
+
+    <!-- Donor Summary -->
+    <VBox spacing="5" style="-fx-border-color: #eeeeee; -fx-border-width: 1; -fx-padding: 10; -fx-border-radius: 3;">
+        <HBox spacing="30">
+            <VBox spacing="3">
+                <Label text="Total Donations:" style="-fx-font-weight: bold;"/>
+                <Label fx:id="totalDonationsCountLabel" text="0" style="-fx-font-size: 14;"/>
+            </VBox>
+            <VBox spacing="3">
+                <Label text="Total Volume (ml):" style="-fx-font-weight: bold;"/>
+                <Label fx:id="totalVolumeLabel" text="0" style="-fx-font-size: 14;"/>
+            </VBox>
+            <VBox spacing="3">
+                <Label text="Last Donation:" style="-fx-font-weight: bold;"/>
+                <Label fx:id="lastDonationLabel" text="Never" style="-fx-font-size: 14;"/>
+            </VBox>
+        </HBox>
+    </VBox>
+
+    <!-- Donation History Table -->
+    <Label text="Donation History" style="-fx-font-weight: bold;"/>
+    <TableView fx:id="donationHistoryTableView" VBox.vgrow="ALWAYS">
+        <columns>
+            <TableColumn fx:id="recordIdColumn" text="ID" prefWidth="40"/>
+            <TableColumn fx:id="recordDateColumn" text="Date" prefWidth="100"/>
+            <TableColumn fx:id="recordVolumeColumn" text="Volume (ml)" prefWidth="100"/>
+            <TableColumn fx:id="recordStatusColumn" text="Status" prefWidth="100"/>
+            <TableColumn fx:id="recordNotesColumn" text="Notes" prefWidth="250"/>
+        </columns>
+    </TableView>
+
+</VBox>

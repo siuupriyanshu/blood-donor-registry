@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+
+<VBox xmlns="http://javafx.com/javafx"
+      xmlns:fx="http://javafx.com/fxml"
+      fx:controller="com.blooddonor.controller.DonorEditorController"
+      spacing="15" style="-fx-padding: 20;">
+
+    <Label fx:id="titleLabel" text="Create New Donor" style="-fx-font-size: 16; -fx-font-weight: bold;"/>
+
+    <Separator/>
+
+    <!-- Form Fields -->
+    <GridPane hgap="15" vgap="15">
+        <!-- Row 1: Name and Email -->
+        <Label text="Name:" GridPane.rowIndex="0" GridPane.columnIndex="0" style="-fx-font-weight: bold;"/>
+        <TextField fx:id="nameField" GridPane.rowIndex="0" GridPane.columnIndex="1" prefWidth="250"/>
+
+        <Label text="Email:" GridPane.rowIndex="0" GridPane.columnIndex="2" style="-fx-font-weight: bold;"/>
+        <TextField fx:id="emailField" GridPane.rowIndex="0" GridPane.columnIndex="3" prefWidth="250"/>
+
+        <!-- Row 2: Phone and Blood Type -->
+        <Label text="Phone:" GridPane.rowIndex="1" GridPane.columnIndex="0" style="-fx-font-weight: bold;"/>
+        <TextField fx:id="phoneField" GridPane.rowIndex="1" GridPane.columnIndex="1" prefWidth="250"/>
+
+        <Label text="Blood Type:" GridPane.rowIndex="1" GridPane.columnIndex="2" style="-fx-font-weight: bold;"/>
+        <ComboBox fx:id="bloodTypeCombo" GridPane.rowIndex="1" GridPane.columnIndex="3" prefWidth="250"/>
+
+        <!-- Row 3: Date of Birth and Gender -->
+        <Label text="Date of Birth:" GridPane.rowIndex="2" GridPane.columnIndex="0" style="-fx-font-weight: bold;"/>
+        <DatePicker fx:id="dateOfBirthPicker" GridPane.rowIndex="2" GridPane.columnIndex="1" prefWidth="250"/>
+
+        <Label text="Gender:" GridPane.rowIndex="2" GridPane.columnIndex="2" style="-fx-font-weight: bold;"/>
+        <ComboBox fx:id="genderCombo" GridPane.rowIndex="2" GridPane.columnIndex="3" prefWidth="250"/>
+
+        <!-- Row 4: Location and Availability -->
+        <Label text="Location:" GridPane.rowIndex="3" GridPane.columnIndex="0" style="-fx-font-weight: bold;"/>
+        <ComboBox fx:id="locationCombo" GridPane.rowIndex="3" GridPane.columnIndex="1" prefWidth="250"/>
+
+        <Label text="Available:" GridPane.rowIndex="3" GridPane.columnIndex="2" style="-fx-font-weight: bold;"/>
+        <CheckBox fx:id="availabilityCheck" GridPane.rowIndex="3" GridPane.columnIndex="3" text="Can donate"/>
+
+        <!-- Row 5: Last Donation Date -->
+        <Label text="Last Donation Date:" GridPane.rowIndex="4" GridPane.columnIndex="0" style="-fx-font-weight: bold;"/>
+        <DatePicker fx:id="lastDonationPicker" GridPane.rowIndex="4" GridPane.columnIndex="1" prefWidth="250"/>
+
+        <!-- Column Constraints -->
+        <columnConstraints>
+            <ColumnConstraints prefWidth="100"/>
+            <ColumnConstraints prefWidth="250"/>
+            <ColumnConstraints prefWidth="100"/>
+            <ColumnConstraints prefWidth="250"/>
+        </columnConstraints>
+    </GridPane>
+
+    <Separator/>
+
+    <!-- Info Label -->
+    <Label fx:id="infoLabel" text="" style="-fx-text-fill: #666666; -fx-font-size: 11;"/>
+
+    <!-- Buttons -->
+    <HBox spacing="10" style="-fx-alignment: center-right;">
+        <Button text="Save" onAction="#handleSave" style="-fx-padding: 10 30; -fx-font-size: 12;"/>
+        <Button text="Cancel" onAction="#handleCancel" style="-fx-padding: 10 30; -fx-font-size: 12;"/>
+    </HBox>
+
+</VBox>

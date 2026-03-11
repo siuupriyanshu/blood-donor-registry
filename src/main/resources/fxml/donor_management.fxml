@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+
+<VBox xmlns="http://javafx.com/javafx"
+      xmlns:fx="http://javafx.com/fxml"
+      fx:controller="com.blooddonor.controller.DonorManagementController"
+      spacing="10" style="-fx-padding: 15;">
+
+    <Label text="Donor Management - CRUD Operations" style="-fx-font-size: 18; -fx-font-weight: bold;"/>
+
+    <Separator/>
+
+    <!-- Toolbar with buttons -->
+    <HBox spacing="10">
+        <Button text="Create New Donor" onAction="#handleCreateDonor" style="-fx-padding: 8;"/>
+        <Button text="Update Selected" onAction="#handleUpdateDonor" style="-fx-padding: 8;"/>
+        <Button text="Delete Selected" onAction="#handleDeleteDonor" style="-fx-padding: 8;"/>
+        <Separator orientation="VERTICAL"/>
+        <Button text="Refresh" onAction="#refreshDonorList" style="-fx-padding: 8;"/>
+    </HBox>
+
+    <!-- Search/Filter Section -->
+    <VBox spacing="8" style="-fx-border-color: #eeeeee; -fx-border-width: 1; -fx-padding: 10; -fx-border-radius: 3;">
+        <Label text="Filter by:" style="-fx-font-weight: bold;"/>
+        <HBox spacing="10">
+            <Label text="Blood Type:" minWidth="80"/>
+            <ComboBox fx:id="filterBloodTypeCombo" prefWidth="150"/>
+        </HBox>
+        <HBox spacing="10">
+            <Label text="Location:" minWidth="80"/>
+            <ComboBox fx:id="filterLocationCombo" prefWidth="150"/>
+        </HBox>
+        <HBox spacing="10">
+            <Label text="Availability:" minWidth="80"/>
+            <CheckBox fx:id="filterAvailabilityCheck" text="Only Available"/>
+        </HBox>
+        <HBox spacing="10">
+            <Button text="Apply Filters" onAction="#applyFilters"/>
+            <Button text="Clear Filters" onAction="#clearFilters"/>
+        </HBox>
+    </VBox>
+
+    <!-- Donor Table -->
+    <Label text="Donors List" style="-fx-font-weight: bold;"/>
+    <TableView fx:id="donorTableView" VBox.vgrow="ALWAYS">
+        <columns>
+            <TableColumn fx:id="idColumn" text="ID" prefWidth="40"/>
+            <TableColumn fx:id="nameColumn" text="Name" prefWidth="120"/>
+            <TableColumn fx:id="emailColumn" text="Email" prefWidth="160"/>
+            <TableColumn fx:id="phoneColumn" text="Phone" prefWidth="120"/>
+            <TableColumn fx:id="bloodTypeColumn" text="Blood Type" prefWidth="80"/>
+            <TableColumn fx:id="locationColumn" text="Location" prefWidth="120"/>
+            <TableColumn fx:id="lastDonationColumn" text="Last Donation" prefWidth="100"/>
+            <TableColumn fx:id="availabilityColumn" text="Available" prefWidth="80"/>
+        </columns>
+    </TableView>
+
+</VBox>

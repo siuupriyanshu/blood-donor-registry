@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+
+<BorderPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="com.blooddonor.controller.MainController">
+
+    <!-- Top Menu Bar -->
+    <top>
+        <VBox>
+            <MenuBar>
+                <Menu text="File">
+                    <MenuItem text="Exit" onAction="#handleExit"/>
+                </Menu>
+                <Menu text="Help">
+                    <MenuItem text="About" onAction="#handleAbout"/>
+                </Menu>
+            </MenuBar>
+
+            <!-- Tab Navigation -->
+            <TabPane fx:id="mainTabPane" tabClosingPolicy="UNAVAILABLE" style="-fx-padding: 0;">
+                <Tab text="Dashboard" closable="false"/>
+                <Tab text="Manage Donors" closable="false"/>
+                <Tab text="Search Donors" closable="false"/>
+                <Tab text="Donation History" closable="false"/>
+            </TabPane>
+        </VBox>
+    </top>
+
+    <!-- Status Bar -->
+    <bottom>
+        <HBox spacing="10" style="-fx-padding: 10; -fx-border-color: #cccccc; -fx-border-width: 1 0 0 0;">
+            <Label fx:id="statusLabel" text="Ready" HBox.hgrow="ALWAYS"/>
+            <Separator orientation="VERTICAL"/>
+            <Label fx:id="connectionLabel" text="Connected" style="-fx-text-fill: green;"/>
+        </HBox>
+    </bottom>
+
+</BorderPane>

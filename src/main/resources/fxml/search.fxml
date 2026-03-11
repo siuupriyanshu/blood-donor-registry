@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+
+<VBox xmlns="http://javafx.com/javafx"
+      xmlns:fx="http://javafx.com/fxml"
+      fx:controller="com.blooddonor.controller.SearchController"
+      spacing="10" style="-fx-padding: 15;">
+
+    <Label text="Search & Filter Donors" style="-fx-font-size: 18; -fx-font-weight: bold;"/>
+
+    <Separator/>
+
+    <!-- Search Criteria Section -->
+    <VBox spacing="10" style="-fx-border-color: #eeeeee; -fx-border-width: 1; -fx-padding: 15; -fx-border-radius: 5;">
+        <Label text="Search Criteria" style="-fx-font-size: 14; -fx-font-weight: bold;"/>
+
+        <HBox spacing="15">
+            <VBox spacing="5">
+                <Label text="Blood Type:" style="-fx-font-weight: bold;"/>
+                <ComboBox fx:id="searchBloodTypeCombo" prefWidth="180"/>
+            </VBox>
+            <VBox spacing="5">
+                <Label text="Location:" style="-fx-font-weight: bold;"/>
+                <ComboBox fx:id="searchLocationCombo" prefWidth="180"/>
+            </VBox>
+            <VBox spacing="5">
+                <Label text="Availability:" style="-fx-font-weight: bold;"/>
+                <CheckBox fx:id="searchAvailabilityCheck" text="Only eligible to donate"/>
+            </VBox>
+        </HBox>
+
+        <HBox spacing="10">
+            <Button text="Search" onAction="#performSearch" style="-fx-padding: 8; -fx-font-size: 12;"/>
+            <Button text="Clear" onAction="#clearSearchFields" style="-fx-padding: 8; -fx-font-size: 12;"/>
+        </HBox>
+    </VBox>
+
+    <!-- Search Results Section -->
+    <Label text="Search Results" style="-fx-font-size: 14; -fx-font-weight: bold;"/>
+    <TableView fx:id="searchResultsTableView" VBox.vgrow="ALWAYS">
+        <columns>
+            <TableColumn fx:id="resultIdColumn" text="ID" prefWidth="40"/>
+            <TableColumn fx:id="resultNameColumn" text="Name" prefWidth="120"/>
+            <TableColumn fx:id="resultEmailColumn" text="Email" prefWidth="150"/>
+            <TableColumn fx:id="resultPhoneColumn" text="Phone" prefWidth="120"/>
+            <TableColumn fx:id="resultBloodTypeColumn" text="Blood Type" prefWidth="80"/>
+            <TableColumn fx:id="resultLocationColumn" text="Location" prefWidth="150"/>
+            <TableColumn fx:id="resultDaysUntilEligibleColumn" text="Days Until Eligible" prefWidth="120"/>
+        </columns>
+    </TableView>
+
+    <!-- Results Summary -->
+    <HBox spacing="20" style="-fx-padding: 10; -fx-border-color: #eeeeee; -fx-border-width: 1; -fx-border-radius: 3;">
+        <Label text="Total Results:" style="-fx-font-weight: bold;"/>
+        <Label fx:id="resultCountLabel" text="0"/>
+        <Separator orientation="VERTICAL"/>
+        <Label text="Immediately Available:" style="-fx-font-weight: bold;"/>
+        <Label fx:id="availableCountLabel" text="0" style="-fx-text-fill: green;"/>
+    </HBox>
+
+</VBox>
