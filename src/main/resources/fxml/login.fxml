@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.geometry.Insets?>
+
+<VBox xmlns:fx="http://javafx.com/fxml"
+      fx:controller="com.lbdrs.controller.LoginController"
+      styleClass="login-root"
+      alignment="CENTER"
+            fillWidth="false"
+      spacing="0"
+      stylesheets="@../css/style.css">
+
+    <!-- Header banner -->
+    <VBox styleClass="login-header" alignment="CENTER" spacing="6">
+        <padding><Insets top="32" bottom="32" left="20" right="20"/></padding>
+        <Label text="🩸" styleClass="login-icon"/>
+        <Label text="Blood Donor Registry" styleClass="login-title"/>
+        <Label text="Local Community Healthcare System" styleClass="login-subtitle"/>
+    </VBox>
+
+    <!-- Form card -->
+    <VBox styleClass="login-card" spacing="18" alignment="CENTER_LEFT">
+        <padding><Insets top="32" bottom="32" left="40" right="40"/></padding>
+
+        <Label text="Sign In" styleClass="card-heading"/>
+
+        <VBox spacing="6">
+            <Label text="Username" styleClass="field-label"/>
+            <TextField fx:id="usernameField" promptText="Enter your username"
+                       styleClass="input-field"/>
+        </VBox>
+
+        <VBox spacing="6">
+            <Label text="Password" styleClass="field-label"/>
+            <PasswordField fx:id="passwordField" promptText="Enter your password"
+                           styleClass="input-field"/>
+        </VBox>
+
+        <Label fx:id="errorLabel" styleClass="error-label" wrapText="true"
+               maxWidth="340"/>
+
+        <Button text="Login" onAction="#handleLogin"
+                styleClass="btn-primary" maxWidth="Infinity"/>
+
+        <VBox alignment="CENTER" spacing="4">
+            <padding><Insets top="8"/></padding>
+            <Label text="Default credentials:" styleClass="hint-label"/>
+            <Label text="Admin → admin / Admin@123" styleClass="hint-label"/>
+            <Label text="Staff → staff / Staff@123" styleClass="hint-label"/>
+        </VBox>
+    </VBox>
+</VBox>

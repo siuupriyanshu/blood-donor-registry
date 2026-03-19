@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+
+<VBox xmlns:fx="http://javafx.com/fxml"
+      fx:controller="com.lbdrs.controller.DonorFormController"
+      stylesheets="@../css/style.css"
+      styleClass="form-root"
+      spacing="0">
+
+    <!-- Form Header -->
+    <HBox styleClass="form-header" alignment="CENTER_LEFT">
+        <padding><Insets top="18" bottom="18" left="24" right="24"/></padding>
+        <Label fx:id="formTitle" text="Register New Donor" styleClass="form-title"/>
+    </HBox>
+
+    <!-- Form Body -->
+    <ScrollPane fitToWidth="true" VBox.vgrow="ALWAYS" styleClass="form-scroll">
+        <VBox spacing="16">
+            <padding><Insets top="24" bottom="24" left="28" right="28"/></padding>
+
+            <!-- Name -->
+            <VBox spacing="4">
+                <Label text="Full Name *" styleClass="field-label"/>
+                <TextField fx:id="nameField" promptText="e.g. Alice Johnson"
+                           styleClass="input-field"/>
+            </VBox>
+
+            <!-- Age + Gender row -->
+            <HBox spacing="14">
+                <VBox spacing="4" HBox.hgrow="ALWAYS">
+                    <Label text="Age *" styleClass="field-label"/>
+                    <TextField fx:id="ageField" promptText="18–65"
+                               styleClass="input-field"/>
+                </VBox>
+                <VBox spacing="4" HBox.hgrow="ALWAYS">
+                    <Label text="Gender" styleClass="field-label"/>
+                    <ComboBox fx:id="genderBox" maxWidth="Infinity"
+                              styleClass="combo-field"/>
+                </VBox>
+            </HBox>
+
+            <!-- Blood Group -->
+            <VBox spacing="4">
+                <Label text="Blood Group *" styleClass="field-label"/>
+                <ComboBox fx:id="bloodGroupBox" maxWidth="Infinity"
+                          styleClass="combo-field"/>
+            </VBox>
+
+            <!-- Contact -->
+            <VBox spacing="4">
+                <Label text="Contact Number *" styleClass="field-label"/>
+                <TextField fx:id="contactField" promptText="e.g. 07123456789"
+                           styleClass="input-field"/>
+            </VBox>
+
+            <!-- Location -->
+            <VBox spacing="4">
+                <Label text="City / Location" styleClass="field-label"/>
+                <TextField fx:id="locationField" promptText="e.g. London"
+                           styleClass="input-field"/>
+            </VBox>
+
+            <!-- Address -->
+            <VBox spacing="4">
+                <Label text="Address" styleClass="field-label"/>
+                <TextField fx:id="addressField" promptText="e.g. 12 Oak Street"
+                           styleClass="input-field"/>
+            </VBox>
+
+            <!-- Last Donation Date -->
+            <VBox spacing="4">
+                <Label text="Last Donation Date" styleClass="field-label"/>
+                <DatePicker fx:id="lastDonationDate" maxWidth="Infinity"
+                            styleClass="date-picker"/>
+            </VBox>
+
+            <!-- Available -->
+            <CheckBox fx:id="availableCheck" text="Donor is currently available"
+                      styleClass="check-field"/>
+
+            <!-- Error label -->
+            <Label fx:id="errorLabel" styleClass="error-label" wrapText="true"/>
+        </VBox>
+    </ScrollPane>
+
+    <!-- Footer buttons -->
+    <HBox styleClass="form-footer" spacing="12" alignment="CENTER_RIGHT">
+        <padding><Insets top="16" bottom="16" left="24" right="24"/></padding>
+        <Button text="Cancel" onAction="#handleCancel" styleClass="btn-outline"/>
+        <Button text="Save Donor" onAction="#handleSave" styleClass="btn-primary"/>
+    </HBox>
+</VBox>

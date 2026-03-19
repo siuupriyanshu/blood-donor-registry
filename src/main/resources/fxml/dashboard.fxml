@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+
+<BorderPane xmlns:fx="http://javafx.com/fxml"
+            fx:controller="com.lbdrs.controller.DashboardController"
+            stylesheets="@../css/style.css"
+            styleClass="root-pane">
+
+    <!-- ── TOP NAV BAR ── -->
+    <top>
+        <HBox styleClass="nav-bar" alignment="CENTER_LEFT" spacing="12">
+            <padding><Insets top="12" bottom="12" left="20" right="20"/></padding>
+
+            <Label text="🩸 LBDRS" styleClass="nav-brand"/>
+            <Region HBox.hgrow="ALWAYS"/>
+            <Label fx:id="welcomeLabel" styleClass="nav-user"/>
+            <Label fx:id="roleLabel"    styleClass="nav-role"/>
+            <Button text="Logout" onAction="#handleLogout" styleClass="btn-outline"/>
+        </HBox>
+    </top>
+
+    <!-- ── SIDEBAR ── -->
+    <left>
+        <VBox styleClass="sidebar" spacing="6" minWidth="180">
+            <padding><Insets top="24" bottom="24" left="12" right="12"/></padding>
+
+            <Label text="MENU" styleClass="sidebar-section-label"/>
+            <Button text="🏠  Dashboard"    maxWidth="Infinity" styleClass="sidebar-btn sidebar-btn-active"/>
+            <Button text="👤  All Donors"   maxWidth="Infinity" styleClass="sidebar-btn"
+                    onAction="#handleRefresh"/>
+            <Button text="🔍  Search"       maxWidth="Infinity" styleClass="sidebar-btn"
+                    onAction="#handleSearch"/>
+            <Button fx:id="addDonorBtn" text="➕  Add Donor" maxWidth="Infinity"
+                    styleClass="sidebar-btn sidebar-btn-add" onAction="#handleAddDonor"/>
+
+            <Region VBox.vgrow="ALWAYS"/>
+            <Label text="CIS096-1 Project" styleClass="sidebar-footer"/>
+            <Label text="Priyanshu K. Mandal" styleClass="sidebar-footer"/>
+        </VBox>
+    </left>
+
+    <!-- ── MAIN CONTENT ── -->
+    <center>
+        <VBox spacing="16">
+            <padding><Insets top="20" bottom="20" left="20" right="20"/></padding>
+
+            <!-- Page title -->
+            <HBox alignment="CENTER_LEFT" spacing="10">
+                <Label text="Donor Registry" styleClass="page-title"/>
+                <Region HBox.hgrow="ALWAYS"/>
+                <Button text="↻ Refresh" onAction="#handleRefresh" styleClass="btn-secondary"/>
+            </HBox>
+
+            <!-- Search / filter bar -->
+            <HBox spacing="10" alignment="CENTER_LEFT" styleClass="search-bar">
+                <padding><Insets top="12" bottom="12" left="16" right="16"/></padding>
+                <TextField fx:id="searchField" promptText="Search by name, blood group, location…"
+                           prefWidth="300" styleClass="input-field"
+                           onAction="#handleSearch"/>
+                <ComboBox fx:id="bloodGroupFilter" promptText="Blood Group" styleClass="combo-field"/>
+                <Button text="Search" onAction="#handleSearch" styleClass="btn-primary"/>
+                <Button text="Clear"  onAction="#handleClear"  styleClass="btn-outline"/>
+            </HBox>
+
+            <!-- Donor Table -->
+            <TableView fx:id="donorTable" VBox.vgrow="ALWAYS" styleClass="donor-table">
+                <columns>
+                    <TableColumn fx:id="colId"        text="ID"        prefWidth="50"/>
+                    <TableColumn fx:id="colName"      text="Name"      prefWidth="160"/>
+                    <TableColumn fx:id="colAge"       text="Age"       prefWidth="50"/>
+                    <TableColumn fx:id="colGender"    text="Gender"    prefWidth="70"/>
+                    <TableColumn fx:id="colBlood"     text="Blood"     prefWidth="60"/>
+                    <TableColumn fx:id="colLocation"  text="Location"  prefWidth="120"/>
+                    <TableColumn fx:id="colContact"   text="Contact"   prefWidth="120"/>
+                    <TableColumn fx:id="colAvailable" text="Available" prefWidth="80"/>
+                    <TableColumn fx:id="colActions"   text="Actions"   minWidth="240" prefWidth="270"/>
+                </columns>
+                <placeholder>
+                    <Label text="No donors found. Use 'Add Donor' to register one."
+                           styleClass="table-placeholder"/>
+                </placeholder>
+            </TableView>
+
+            <!-- Status bar -->
+            <HBox styleClass="status-bar" alignment="CENTER_LEFT">
+                <padding><Insets top="6" bottom="6" left="12" right="12"/></padding>
+                <Label fx:id="statusLabel" text="Loading…" styleClass="status-label"/>
+            </HBox>
+        </VBox>
+    </center>
+</BorderPane>

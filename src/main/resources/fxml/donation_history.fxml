@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+
+<VBox xmlns:fx="http://javafx.com/fxml"
+      fx:controller="com.lbdrs.controller.DonationController"
+      stylesheets="@../css/style.css"
+      styleClass="form-root"
+      spacing="0">
+
+    <!-- Header -->
+    <HBox styleClass="form-header" alignment="CENTER_LEFT">
+        <padding><Insets top="16" bottom="16" left="24" right="24"/></padding>
+        <VBox spacing="2">
+            <Label text="Donation History" styleClass="form-title"/>
+            <Label fx:id="donorLabel" text="" styleClass="form-subtitle"/>
+        </VBox>
+    </HBox>
+
+    <!-- History Table -->
+    <TableView fx:id="historyTable" VBox.vgrow="ALWAYS" styleClass="donor-table">
+        <padding><Insets top="0" bottom="0" left="0" right="0"/></padding>
+        <columns>
+            <TableColumn fx:id="colHistId"   text="ID"       prefWidth="50"/>
+            <TableColumn fx:id="colDate"     text="Date"     prefWidth="140"/>
+            <TableColumn fx:id="colStatus"   text="Status"   prefWidth="120"/>
+            <TableColumn fx:id="colLocation" text="Location" prefWidth="260"/>
+        </columns>
+        <placeholder>
+            <Label text="No donation history found." styleClass="table-placeholder"/>
+        </placeholder>
+    </TableView>
+
+    <!-- Record New Donation -->
+    <VBox styleClass="history-form" spacing="14">
+        <padding><Insets top="20" bottom="20" left="24" right="24"/></padding>
+
+        <Label text="Record New Donation" styleClass="section-heading"/>
+
+        <HBox spacing="14" alignment="CENTER_LEFT">
+            <VBox spacing="4">
+                <Label text="Date *" styleClass="field-label"/>
+                <DatePicker fx:id="donationDatePicker" styleClass="date-picker" prefWidth="160"/>
+            </VBox>
+            <VBox spacing="4">
+                <Label text="Status" styleClass="field-label"/>
+                <ComboBox fx:id="statusBox" prefWidth="140" styleClass="combo-field"/>
+            </VBox>
+            <VBox spacing="4" HBox.hgrow="ALWAYS">
+                <Label text="Location / Blood Bank *" styleClass="field-label"/>
+                <TextField fx:id="locationField" promptText="e.g. London Blood Bank"
+                           styleClass="input-field" maxWidth="Infinity"/>
+            </VBox>
+            <VBox spacing="4" alignment="BOTTOM_LEFT">
+                <Button text="Record" onAction="#handleRecordDonation"
+                        styleClass="btn-primary"/>
+            </VBox>
+        </HBox>
+
+        <Label fx:id="formError" styleClass="error-label" wrapText="true"/>
+    </VBox>
+</VBox>
