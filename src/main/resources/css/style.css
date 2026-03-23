@@ -24,6 +24,11 @@
     -fx-background-color: #C0392B;
     -fx-pref-width: 450;
     -fx-max-width: 450;
+
+    -fx-background-radius: 8 8 0 0;
+    -fx-border-radius: 8 8 0 0;
+
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 8, 0, 0, 4);
 }
 
 .login-icon {
@@ -47,6 +52,9 @@
     -fx-border-width: 1;
     -fx-pref-width: 450;
     -fx-max-width: 450;
+    -fx-background-radius: 0 0 8 8;
+    -fx-border-radius: 8 8 8 8;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 8, 0, 0, 4);
 }
 
 .card-heading {
