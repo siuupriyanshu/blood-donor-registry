@@ -44,11 +44,11 @@
         <Button text="Login" onAction="#handleLogin"
                 styleClass="btn-primary" maxWidth="Infinity"/>
 
-        <VBox alignment="CENTER" spacing="4">
+        <!-- <VBox alignment="CENTER" spacing="4">
             <padding><Insets top="8"/></padding>
             <Label text="Default credentials:" styleClass="hint-label"/>
             <Label text="Admin → admin / Admin@123" styleClass="hint-label"/>
             <Label text="Staff → staff / Staff@123" styleClass="hint-label"/>
-        </VBox>
+        </VBox> -->
     </VBox>
 </VBox>
