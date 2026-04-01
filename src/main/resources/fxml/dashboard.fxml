@@ -86,6 +86,8 @@
                 </placeholder>
             </TableView>
 
+            <Pagination fx:id="donorPagination" maxPageIndicatorCount="10"/>
+
             <!-- Status bar -->
             <HBox styleClass="status-bar" alignment="CENTER_LEFT">
                 <padding><Insets top="6" bottom="6" left="12" right="12"/></padding>

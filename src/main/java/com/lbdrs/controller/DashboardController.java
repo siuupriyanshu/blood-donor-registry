@@ -31,6 +31,7 @@ public class DashboardController {
     @FXML private ComboBox<String> bloodGroupFilter;
     @FXML private Button   addDonorBtn;
     @FXML private Button   addDonationBtn;
+    @FXML private Pagination donorPagination;
 
     // ── TableView ────────────────────────────────────────────────────────────
     @FXML private TableView<Donor>            donorTable;
@@ -48,6 +49,11 @@ public class DashboardController {
 
     private final DonorRepository donorRepo = new DonorRepository();
     private ObservableList<Donor> donorData = FXCollections.observableArrayList();
+    private static final int PAGE_SIZE = 25;
+
+    private String activeKeyword = "";
+    private String activeBloodGroup = "All";
+    private boolean suppressPageListener = false;
 
     @FXML
     public void initialize() {
@@ -121,38 +127,90 @@ public class DashboardController {
         });
 
         donorTable.setItems(donorData);
+
+        donorPagination.currentPageIndexProperty().addListener((obs, oldVal, newVal) -> {
+            if (!suppressPageListener) loadPage(newVal.intValue());
+        });
+
         loadDonors();
     }
 
     // ── Data loading ─────────────────────────────────────────────────────────
     private void loadDonors() {
+        activeKeyword = "";
+        activeBloodGroup = "All";
+        loadFirstPage();
+    }
+
+    private void loadFirstPage() {
+        refreshPaginationAndLoad(0);
+    }
+
+    private void refreshPaginationAndLoad(int requestedPage) {
         try {
-            List<Donor> donors = donorRepo.getAllDonors();
-            donorData.setAll(donors);
-            statusLabel.setText(donors.size() + " donor(s) found.");
+            int total = countActiveDonors();
+            int pageCount = Math.max(1, (int) Math.ceil((double) total / PAGE_SIZE));
+            int targetPage = Math.max(0, Math.min(requestedPage, pageCount - 1));
+
+            suppressPageListener = true;
+            donorPagination.setPageCount(pageCount);
+            donorPagination.setCurrentPageIndex(targetPage);
+            suppressPageListener = false;
+
+            loadPage(targetPage, total);
+        } catch (SQLException e) {
+            suppressPageListener = false;
+            showAlert(Alert.AlertType.ERROR, "Load Error", e.getMessage());
+        }
+    }
+
+    private void loadPage(int pageIndex) {
+        try {
+            int total = countActiveDonors();
+            loadPage(pageIndex, total);
         } catch (SQLException e) {
             showAlert(Alert.AlertType.ERROR, "Load Error", e.getMessage());
         }
     }
 
+    private void loadPage(int pageIndex, int total) throws SQLException {
+        int offset = pageIndex * PAGE_SIZE;
+        List<Donor> donors;
+        if (!activeKeyword.isEmpty()) {
+            donors = donorRepo.searchDonorsPage(activeKeyword, PAGE_SIZE, offset);
+        } else if (activeBloodGroup != null && !"All".equals(activeBloodGroup)) {
+            donors = donorRepo.filterByBloodGroupPage(activeBloodGroup, PAGE_SIZE, offset);
+        } else {
+            donors = donorRepo.getAllDonorsPage(PAGE_SIZE, offset);
+        }
+
+        donorData.setAll(donors);
+
+        if (total == 0) {
+            statusLabel.setText("0 donor(s) found.");
+            return;
+        }
+
+        int from = offset + 1;
+        int to = offset + donors.size();
+        statusLabel.setText("Showing " + from + "-" + to + " of " + total + " donor(s).");
+    }
+
+    private int countActiveDonors() throws SQLException {
+        if (!activeKeyword.isEmpty()) {
+            return donorRepo.countSearchDonors(activeKeyword);
+        }
+        if (activeBloodGroup != null && !"All".equals(activeBloodGroup)) {
+            return donorRepo.countByBloodGroup(activeBloodGroup);
+        }
+        return donorRepo.countAllDonors();
+    }
+
     @FXML
     public void handleSearch() {
-        String kw = searchField.getText().trim();
-        String bg = bloodGroupFilter.getValue();
-        try {
-            List<Donor> results;
-            if (!kw.isEmpty()) {
-                results = donorRepo.searchDonors(kw);
-            } else if (bg != null && !bg.equals("All")) {
-                results = donorRepo.filterByBloodGroup(bg);
-            } else {
-                results = donorRepo.getAllDonors();
-            }
-            donorData.setAll(results);
-            statusLabel.setText(results.size() + " donor(s) found.");
-        } catch (SQLException e) {
-            showAlert(Alert.AlertType.ERROR, "Search Error", e.getMessage());
-        }
+        activeKeyword = searchField.getText().trim();
+        activeBloodGroup = bloodGroupFilter.getValue() != null ? bloodGroupFilter.getValue() : "All";
+        loadFirstPage();
     }
 
     @FXML
@@ -189,7 +247,6 @@ public class DashboardController {
         searchField.clear();
         bloodGroupFilter.getSelectionModel().selectFirst();
         loadDonors();
-        statusLabel.setText("Refreshed.");
     }
 
     @FXML
@@ -223,7 +280,7 @@ public class DashboardController {
             stage.setResizable(true);
             stage.setMaximized(true);
             stage.showAndWait();
-            loadDonors();
+            refreshPaginationAndLoad(donorPagination.getCurrentPageIndex());
         } catch (IOException e) {
             showAlert(Alert.AlertType.ERROR, "Form Error", e.getMessage());
         }
@@ -266,8 +323,7 @@ public class DashboardController {
         if (result.isPresent() && result.get() == ButtonType.YES) {
             try {
                 donorRepo.deleteDonor(donor.getDonorId());
-                loadDonors();
-                statusLabel.setText("Donor deleted.");
+                refreshPaginationAndLoad(donorPagination.getCurrentPageIndex());
             } catch (SQLException e) {
                 showAlert(Alert.AlertType.ERROR, "Delete Error", e.getMessage());
             }

@@ -53,6 +53,27 @@ public class DonorRepository {
         return list;
     }
 
+    public List<Donor> getAllDonorsPage(int limit, int offset) throws SQLException {
+        List<Donor> list = new ArrayList<>();
+        String sql = "SELECT * FROM donor ORDER BY name ASC LIMIT ? OFFSET ?";
+        try (PreparedStatement ps = DatabaseConnection.getInstance().prepareStatement(sql)) {
+            ps.setInt(1, Math.max(1, limit));
+            ps.setInt(2, Math.max(0, offset));
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) list.add(mapRow(rs));
+        }
+        return list;
+    }
+
+    public int countAllDonors() throws SQLException {
+        String sql = "SELECT COUNT(*) FROM donor";
+        try (Statement st = DatabaseConnection.getInstance().createStatement();
+             ResultSet rs = st.executeQuery(sql)) {
+            if (rs.next()) return rs.getInt(1);
+        }
+        return 0;
+    }
+
     // ────────────────────────────────────────────────────────────────────────
     // READ – by ID
     // ────────────────────────────────────────────────────────────────────────
@@ -92,6 +113,35 @@ public class DonorRepository {
         return list;
     }
 
+    public List<Donor> searchDonorsPage(String keyword, int limit, int offset) throws SQLException {
+        List<Donor> list = new ArrayList<>();
+        String sql = "SELECT * FROM donor WHERE name LIKE ? OR bloodGroup LIKE ? " +
+                     "OR location LIKE ? OR contactNumber LIKE ? ORDER BY name ASC LIMIT ? OFFSET ?";
+        try (PreparedStatement ps = DatabaseConnection.getInstance().prepareStatement(sql)) {
+            String k = "%" + keyword.trim() + "%";
+            ps.setString(1, k); ps.setString(2, k);
+            ps.setString(3, k); ps.setString(4, k);
+            ps.setInt(5, Math.max(1, limit));
+            ps.setInt(6, Math.max(0, offset));
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) list.add(mapRow(rs));
+        }
+        return list;
+    }
+
+    public int countSearchDonors(String keyword) throws SQLException {
+        String sql = "SELECT COUNT(*) FROM donor WHERE name LIKE ? OR bloodGroup LIKE ? " +
+                     "OR location LIKE ? OR contactNumber LIKE ?";
+        try (PreparedStatement ps = DatabaseConnection.getInstance().prepareStatement(sql)) {
+            String k = "%" + keyword.trim() + "%";
+            ps.setString(1, k); ps.setString(2, k);
+            ps.setString(3, k); ps.setString(4, k);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) return rs.getInt(1);
+        }
+        return 0;
+    }
+
     // ────────────────────────────────────────────────────────────────────────
     // READ – filter by blood group (available donors only)
     // ────────────────────────────────────────────────────────────────────────
@@ -104,6 +154,30 @@ public class DonorRepository {
             while (rs.next()) list.add(mapRow(rs));
         }
         return list;
+    }
+
+    public List<Donor> filterByBloodGroupPage(String bloodGroup, int limit, int offset) throws SQLException {
+        List<Donor> list = new ArrayList<>();
+        String sql = "SELECT * FROM donor WHERE bloodGroup = ? AND isAvailable = TRUE " +
+                     "ORDER BY name ASC LIMIT ? OFFSET ?";
+        try (PreparedStatement ps = DatabaseConnection.getInstance().prepareStatement(sql)) {
+            ps.setString(1, bloodGroup.trim());
+            ps.setInt(2, Math.max(1, limit));
+            ps.setInt(3, Math.max(0, offset));
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) list.add(mapRow(rs));
+        }
+        return list;
+    }
+
+    public int countByBloodGroup(String bloodGroup) throws SQLException {
+        String sql = "SELECT COUNT(*) FROM donor WHERE bloodGroup = ? AND isAvailable = TRUE";
+        try (PreparedStatement ps = DatabaseConnection.getInstance().prepareStatement(sql)) {
+            ps.setString(1, bloodGroup.trim());
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) return rs.getInt(1);
+        }
+        return 0;
     }
 
     // ────────────────────────────────────────────────────────────────────────
