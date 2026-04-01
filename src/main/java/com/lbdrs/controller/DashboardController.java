@@ -111,6 +111,7 @@ public class DashboardController {
                 if (empty) { setGraphic(null); }
                 else {
                     HBox box = new HBox(4, viewBtn, editBtn, deleteBtn);
+                    box.setAlignment(javafx.geometry.Pos.CENTER);
                     box.setFillHeight(true);
                     setGraphic(box);
                 }
@@ -153,6 +154,12 @@ public class DashboardController {
     }
 
     @FXML
+    public void handleSidebarSearch() {
+        searchField.requestFocus();
+        searchField.selectAll();
+    }
+
+    @FXML
     public void handleClear() {
         searchField.clear();
         bloodGroupFilter.getSelectionModel().selectFirst();
@@ -166,7 +173,10 @@ public class DashboardController {
 
     @FXML
     public void handleRefresh() {
+        searchField.clear();
+        bloodGroupFilter.getSelectionModel().selectFirst();
         loadDonors();
+        statusLabel.setText("Refreshed.");
     }
 
     @FXML
@@ -176,7 +186,7 @@ public class DashboardController {
             Parent root = FXMLLoader.load(getClass().getResource("/fxml/login.fxml"));
             Stage stage = (Stage) welcomeLabel.getScene().getWindow();
             stage.setTitle("LBDRS – Login");
-            stage.setScene(new Scene(root, 450, 500));
+            stage.setScene(new Scene(root, 600, 600));
             stage.centerOnScreen();
         } catch (IOException e) {
             e.printStackTrace();

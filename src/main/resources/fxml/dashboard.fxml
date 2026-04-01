@@ -31,19 +31,17 @@
             <Button text="👤  All Donors"   maxWidth="Infinity" styleClass="sidebar-btn"
                     onAction="#handleRefresh"/>
             <Button text="🔍  Search"       maxWidth="Infinity" styleClass="sidebar-btn"
-                    onAction="#handleSearch"/>
+                    onAction="#handleSidebarSearch"/>
             <Button fx:id="addDonorBtn" text="➕  Add Donor" maxWidth="Infinity"
                     styleClass="sidebar-btn sidebar-btn-add" onAction="#handleAddDonor"/>
 
             <Region VBox.vgrow="ALWAYS"/>
-            <Label text="CIS096-1 Project" styleClass="sidebar-footer"/>
-            <Label text="Priyanshu K. Mandal" styleClass="sidebar-footer"/>
         </VBox>
     </left>
 
     <!-- ── MAIN CONTENT ── -->
     <center>
-        <VBox spacing="16">
+        <VBox spacing="16" alignment="TOP_CENTER">
             <padding><Insets top="20" bottom="20" left="20" right="20"/></padding>
 
             <!-- Page title -->
@@ -65,7 +63,10 @@
             </HBox>
 
             <!-- Donor Table -->
-            <TableView fx:id="donorTable" VBox.vgrow="ALWAYS" styleClass="donor-table">
+            <TableView fx:id="donorTable" VBox.vgrow="ALWAYS" styleClass="donor-table" maxWidth="1200">
+                <columnResizePolicy>
+                    <TableView fx:constant="CONSTRAINED_RESIZE_POLICY"/>
+                </columnResizePolicy>
                 <columns>
                     <TableColumn fx:id="colId"        text="ID"        prefWidth="50"/>
                     <TableColumn fx:id="colName"      text="Name"      prefWidth="160"/>
@@ -74,8 +75,8 @@
                     <TableColumn fx:id="colBlood"     text="Blood"     prefWidth="60"/>
                     <TableColumn fx:id="colLocation"  text="Location"  prefWidth="120"/>
                     <TableColumn fx:id="colContact"   text="Contact"   prefWidth="120"/>
-                    <TableColumn fx:id="colAvailable" text="Available" prefWidth="80"/>
-                    <TableColumn fx:id="colActions"   text="Actions"   minWidth="240" prefWidth="270"/>
+                    <TableColumn fx:id="colAvailable" text="Available" prefWidth="90"/>
+                    <TableColumn fx:id="colActions"   text="Actions"   minWidth="280" prefWidth="280"/>
                 </columns>
                 <placeholder>
                     <Label text="No donors found. Use 'Add Donor' to register one."

@@ -369,6 +369,18 @@
     -fx-padding: 5 10;
 }
 
+.table-cell {
+    -fx-alignment: CENTER;
+}
+
+.table-column {
+    -fx-alignment: CENTER;
+}
+
+.table-cell:last-visible {
+    -fx-alignment: CENTER;
+}
+
 .btn-outline {
     -fx-background-color: transparent;
     -fx-text-fill: white;

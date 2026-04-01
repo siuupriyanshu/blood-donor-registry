@@ -17,7 +17,7 @@ public class Main extends Application {
     public void start(Stage primaryStage) throws Exception {
         Parent root = FXMLLoader.load(getClass().getResource("/fxml/login.fxml"));
         primaryStage.setTitle("Local Blood Donor Registry System");
-        primaryStage.setScene(new Scene(root, 450, 500));
+        primaryStage.setScene(new Scene(root, 600, 600));
         primaryStage.setResizable(true);
         primaryStage.centerOnScreen();
         primaryStage.show();
