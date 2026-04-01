@@ -30,6 +30,7 @@ public class DashboardController {
     @FXML private TextField searchField;
     @FXML private ComboBox<String> bloodGroupFilter;
     @FXML private Button   addDonorBtn;
+    @FXML private Button   addDonationBtn;
 
     // ── TableView ────────────────────────────────────────────────────────────
     @FXML private TableView<Donor>            donorTable;
@@ -58,6 +59,7 @@ public class DashboardController {
 
         // Admin-only controls
         addDonorBtn.setVisible(Session.getInstance().isAdmin());
+        addDonationBtn.setVisible(Session.getInstance().canRecordDonation());
 
         // Blood group filter options
         bloodGroupFilter.setItems(FXCollections.observableArrayList(
@@ -169,6 +171,17 @@ public class DashboardController {
     @FXML
     public void handleAddDonor() {
         openForm(null);
+    }
+
+    @FXML
+    public void handleAddDonation() {
+        Donor selectedDonor = donorTable.getSelectionModel().getSelectedItem();
+        if (selectedDonor == null) {
+            showAlert(Alert.AlertType.WARNING, "Select Donor",
+                    "Please select a donor from the table first.");
+            return;
+        }
+        openHistory(selectedDonor);
     }
 
     @FXML

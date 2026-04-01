@@ -19,5 +19,7 @@ public class Session {
     public void   setCurrentUser(User user)  { this.currentUser = user; }
     public User   getCurrentUser()           { return currentUser; }
     public boolean isAdmin()                 { return currentUser != null && "Admin".equals(currentUser.getRole()); }
+    public boolean isMedicalStaff()          { return currentUser != null && "MedicalStaff".equals(currentUser.getRole()); }
+    public boolean canRecordDonation()       { return isAdmin() || isMedicalStaff(); }
     public void   clear()                    { currentUser = null; }
 }

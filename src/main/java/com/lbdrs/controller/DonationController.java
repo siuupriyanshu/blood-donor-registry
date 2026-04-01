@@ -3,6 +3,7 @@ package com.lbdrs.controller;
 import com.lbdrs.dao.DonationHistoryRepository;
 import com.lbdrs.model.Donor;
 import com.lbdrs.model.DonationHistory;
+import com.lbdrs.model.Session;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -72,6 +73,11 @@ public class DonationController {
 
     @FXML
     public void handleRecordDonation() {
+        if (!Session.getInstance().canRecordDonation()) {
+            showError("Your role is not allowed to record donations.");
+            return;
+        }
+
         LocalDate date = donationDatePicker.getValue();
         String    loc  = locationField.getText().trim();
 

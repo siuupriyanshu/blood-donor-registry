@@ -34,6 +34,8 @@
                     onAction="#handleSidebarSearch"/>
             <Button fx:id="addDonorBtn" text="➕  Add Donor" maxWidth="Infinity"
                     styleClass="sidebar-btn sidebar-btn-add" onAction="#handleAddDonor"/>
+                <Button fx:id="addDonationBtn" text="💉  Add Donation" maxWidth="Infinity"
+                    styleClass="sidebar-btn sidebar-btn-add" onAction="#handleAddDonation"/>
 
             <Region VBox.vgrow="ALWAYS"/>
         </VBox>
