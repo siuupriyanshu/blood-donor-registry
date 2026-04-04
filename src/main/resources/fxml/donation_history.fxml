@@ -18,46 +18,50 @@
         </VBox>
     </HBox>
 
-    <!-- History Table -->
-    <TableView fx:id="historyTable" VBox.vgrow="ALWAYS" styleClass="donor-table">
-        <padding><Insets top="0" bottom="0" left="0" right="0"/></padding>
-        <columns>
-            <TableColumn fx:id="colHistId"   text="ID"       prefWidth="50"/>
-            <TableColumn fx:id="colDate"     text="Date"     prefWidth="140"/>
-            <TableColumn fx:id="colStatus"   text="Status"   prefWidth="120"/>
-            <TableColumn fx:id="colLocation" text="Location" prefWidth="260"/>
-        </columns>
-        <placeholder>
-            <Label text="No donation history found." styleClass="table-placeholder"/>
-        </placeholder>
-    </TableView>
+    <HBox VBox.vgrow="ALWAYS" spacing="20">
+        <padding><Insets top="0" bottom="20" left="24" right="24"/></padding>
 
-    <!-- Record New Donation -->
-    <VBox styleClass="history-form" spacing="14">
-        <padding><Insets top="20" bottom="20" left="24" right="24"/></padding>
+        <!-- Record New Donation -->
+        <VBox styleClass="history-form" spacing="14" maxWidth="350" minWidth="350">
+            <padding><Insets top="24" bottom="24" left="24" right="24"/></padding>
 
-        <Label text="Record New Donation" styleClass="section-heading"/>
+            <Label text="Record New Donation" styleClass="section-heading"/>
 
-        <HBox spacing="14" alignment="CENTER_LEFT">
             <VBox spacing="4">
                 <Label text="Date *" styleClass="field-label"/>
-                <DatePicker fx:id="donationDatePicker" styleClass="date-picker" prefWidth="160"/>
+                <DatePicker fx:id="donationDatePicker" styleClass="date-picker" maxWidth="Infinity"/>
             </VBox>
             <VBox spacing="4">
                 <Label text="Status" styleClass="field-label"/>
-                <ComboBox fx:id="statusBox" prefWidth="140" styleClass="combo-field"/>
+                <ComboBox fx:id="statusBox" styleClass="combo-field" maxWidth="Infinity"/>
             </VBox>
-            <VBox spacing="4" HBox.hgrow="ALWAYS">
+            <VBox spacing="4">
                 <Label text="Location / Blood Bank *" styleClass="field-label"/>
                 <TextField fx:id="locationField" promptText="e.g. London Blood Bank"
                            styleClass="input-field" maxWidth="Infinity"/>
             </VBox>
-            <VBox spacing="4" alignment="BOTTOM_LEFT">
+            <HBox spacing="10" alignment="CENTER_LEFT">
                 <Button text="Record" onAction="#handleRecordDonation"
-                        styleClass="btn-primary"/>
-            </VBox>
-        </HBox>
+                        styleClass="btn-primary" HBox.hgrow="ALWAYS" maxWidth="Infinity"/>
+                <Button text="Close" onAction="#handleClose"
+                        styleClass="btn-outline" 
+                        style="-fx-text-fill: #34495e; -fx-border-color: #ccc;"/>
+            </HBox>
 
-        <Label fx:id="formError" styleClass="error-label" wrapText="true"/>
-    </VBox>
+            <Label fx:id="formError" styleClass="error-label" wrapText="true"/>
+        </VBox>
+
+        <!-- History Table -->
+        <TableView fx:id="historyTable" HBox.hgrow="ALWAYS" styleClass="donor-table">
+            <columns>
+                <TableColumn fx:id="colHistId"   text="ID"       prefWidth="50"/>
+                <TableColumn fx:id="colDate"     text="Date"     prefWidth="140"/>
+                <TableColumn fx:id="colStatus"   text="Status"   prefWidth="120"/>
+                <TableColumn fx:id="colLocation" text="Location" prefWidth="260"/>
+            </columns>
+            <placeholder>
+                <Label text="No donation history found." styleClass="table-placeholder"/>
+            </placeholder>
+        </TableView>
+    </HBox>
 </VBox>

@@ -10,15 +10,17 @@
       spacing="0">
 
     <!-- Form Header -->
-    <HBox styleClass="form-header" alignment="CENTER_LEFT">
+    <HBox styleClass="form-header" alignment="CENTER">
         <padding><Insets top="18" bottom="18" left="24" right="24"/></padding>
         <Label fx:id="formTitle" text="Register New Donor" styleClass="form-title"/>
     </HBox>
 
     <!-- Form Body -->
     <ScrollPane fitToWidth="true" VBox.vgrow="ALWAYS" styleClass="form-scroll">
-        <VBox spacing="16">
-            <padding><Insets top="24" bottom="24" left="28" right="28"/></padding>
+        <VBox alignment="TOP_CENTER">
+            <padding><Insets top="24" bottom="24" left="24" right="24"/></padding>
+            <VBox spacing="16" maxWidth="600" style="-fx-background-color: white; -fx-background-radius: 8; -fx-border-color: #e0e0e0; -fx-border-radius: 8;">
+                <padding><Insets top="32" bottom="32" left="32" right="32"/></padding>
 
             <!-- Name -->
             <VBox spacing="4">
@@ -82,13 +84,14 @@
 
             <!-- Error label -->
             <Label fx:id="errorLabel" styleClass="error-label" wrapText="true"/>
+
+            <HBox spacing="12" alignment="CENTER_RIGHT">
+                <padding><Insets top="8"/></padding>
+                <Button text="Cancel" onAction="#handleCancel" styleClass="btn-outline" 
+                        style="-fx-text-fill: #34495e; -fx-border-color: #ccc;"/>
+                <Button text="Save Donor" onAction="#handleSave" styleClass="btn-primary" prefWidth="180"/>
+            </HBox>
+            </VBox>
         </VBox>
     </ScrollPane>
-
-    <!-- Footer buttons -->
-    <HBox styleClass="form-footer" spacing="12" alignment="CENTER_RIGHT">
-        <padding><Insets top="16" bottom="16" left="24" right="24"/></padding>
-        <Button text="Cancel" onAction="#handleCancel" styleClass="btn-outline"/>
-        <Button text="Save Donor" onAction="#handleSave" styleClass="btn-primary"/>
-    </HBox>
 </VBox>

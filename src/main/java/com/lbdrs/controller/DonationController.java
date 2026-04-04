@@ -106,4 +106,9 @@ public class DonationController {
         formError.setText(msg);
         formError.setVisible(true);
     }
+
+    @FXML
+    public void handleClose() {
+        donorLabel.getScene().getWindow().hide();
+    }
 }
