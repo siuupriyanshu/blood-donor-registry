@@ -1,210 +1,200 @@
 # Local Blood Donor Registry System (LBDRS)
 
-**Module:** CIS096-1 – Principles of Programming and Data Structures  
-**Student:** Priyanshu Kumar Mandal | ID: 2542275  
-**University:** University of Bedfordshire
+Module: CIS096-1 - Principles of Programming and Data Structures  
+Student: Priyanshu Kumar Mandal (2542275)  
+University: University of Bedfordshire
 
----
+## Overview
 
-## Documentation Index
+LBDRS is a JavaFX desktop application for managing blood donor records and donation history with role-based access.
 
-- Main setup and usage: `README.md`
-- Build and packaging guide: `README_BUILD_GUIDE.md`
-- OOP architecture and implementation: `README_OOP_ARCHITECTURE.md`
-- System architecture: `README_SYSTEM_ARCHITECTURE.md`
-- Project guide and contributor notes: `README_PROJECT_GUIDE.md`
-- Project report: `PROJECT_REPORT.md`
-
----
+Core capabilities:
+- Authentication for Admin and Medical Staff users
+- Donor registration, search, filtering, edit, and delete
+- Donation history tracking per donor
+- Eligibility check using the 56-day rule
+- Secure SQL access through prepared statements
 
 ## Technology Stack
 
 | Layer | Technology | Version |
-|-------|-----------|---------|
-| Language | Java SE | 21 |
-| UI | JavaFX | 21 |
+|---|---|---|
+| Language | Java | 21 |
+| UI | JavaFX (FXML + CSS) | 21.0.2 |
 | Build | Maven | 3.9+ |
-| Database | MySQL | 8.0 |
-| JDBC | MySQL Connector/J | 8.0.33 |
+| Database | MySQL | 8.x |
+| JDBC | mysql-connector-j | 8.0.33 |
+| Security | jBCrypt | 0.4 |
+| Testing | JUnit 5 + Mockito | 5.x |
 
----
+## Documentation Index
+
+- Main setup and usage: `README.md`
+
+## Prerequisites
+
+- JDK 21
+- Apache Maven 3.9+
+- MySQL 8
+
+Verify tools:
+
+```bash
+java -version
+mvn -version
+mysql --version
+```
 
 ## Quick Start
 
-### 1. Prerequisites
+### 1) Configure Database Credentials
 
-- JDK 21 → https://adoptium.net
-- Apache Maven 3.9+ (add to PATH)
-- MySQL Server 8.0
-
-Verify:
-```bash
-java -version      # openjdk 21.x.x
-mvn  -version      # Apache Maven 3.9.x
-mysql --version    # mysql  Ver 8.0.x
-```
-
-### 2. Database Setup
-
-```bash
-# Log in as MySQL root
-mysql -u root -p
-
-# Create the dedicated app user
-CREATE USER 'lbdrs_user'@'localhost' IDENTIFIED BY 'SecurePass123!';
-GRANT ALL PRIVILEGES ON lbdrs_db.* TO 'lbdrs_user'@'localhost';
-FLUSH PRIVILEGES;
-EXIT;
-
-# Provision schema + sample data
-mysql -u lbdrs_user -p < src/main/resources/db/schema.sql
-```
-
-### 3. Configure (optional)
-
-Edit `src/main/resources/db.properties` if you used different credentials:
+Update `src/main/resources/db.properties` first (defaults in this repo are `root` / `root`):
 
 ```properties
-db.url=jdbc:mysql://localhost:3306/lbdrs_db?useSSL=false&serverTimezone=UTC
-db.user=lbdrs_user
-db.password=SecurePass123!
+db.url=jdbc:mysql://localhost:3306/lbdrs_db?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
+db.user=root
+db.password=root
 ```
 
-### 4. Build & Run
+### 2) Initialize the Database
+
+Run:
 
 ```bash
-# Compile and run via Maven JavaFX plugin
-mvn clean javafx:run
-
-# Or: build a fat JAR first, then run
-mvn clean package
-java --module-path /path/to/javafx/lib \
-     --add-modules javafx.controls,javafx.fxml \
-     -jar target/lbdrs-1.0-SNAPSHOT.jar
+mysql -u <your_user> -p < src/main/resources/db/schema.sql
 ```
 
-### 5. Login Credentials
+Important:
+- `schema.sql` starts with `DROP DATABASE IF EXISTS lbdrs_db;`
+- It recreates the schema and seeds users, donors, and donation history
+- It inserts 5000 donor rows for testing/demo scale
+
+### 3) Run the Application
+
+```bash
+mvn clean javafx:run
+```
+
+### 4) Login (Seed Accounts)
+
+The current `schema.sql` seeds these development credentials:
 
 | Role | Username | Password |
-|------|----------|----------|
-| Admin | `admin` | `Admin@123` |
-| Medical Staff | `staff` | `Staff@123` |
+|---|---|---|
+| Admin | `admin` | `admin` |
+| Medical Staff | `staff` | `staff` |
 
-> **Note:** The seed passwords in `schema.sql` are plain-text fallback values for development.  
-> In production, generate proper BCrypt hashes using `UserRepository.createUser()`.
+Note:
+- `UserRepository` supports BCrypt verification
+- For legacy/plain seed values, the code includes a fallback plain-text match for development
+- For production-style users, create accounts with BCrypt hashes via `UserRepository.createUser(...)`
 
----
+## Build and Package
 
-## Running Tests
+Create the shaded executable jar:
 
 ```bash
-# All tests (no DB required – unit tests only)
-mvn test
+mvn clean package
+```
 
-# Specific class
+Output artifact:
+- `target/lbdrs-1.0-SNAPSHOT.jar`
+
+Run packaged jar (if JavaFX modules are not auto-provided by your runtime):
+
+```bash
+java --module-path /path/to/javafx/lib \
+    --add-modules javafx.controls,javafx.fxml \
+    -jar target/lbdrs-1.0-SNAPSHOT.jar
+```
+
+## Testing
+
+Run all tests:
+
+```bash
+mvn test
+```
+
+Run specific tests:
+
+```bash
 mvn -Dtest=DonorTest test
+mvn -Dtest=DonationHistoryTest test
 mvn -Dtest=ValidationUtilTest test
 ```
 
----
-
 ## Project Structure
 
-```
+```text
 lbdrs/
-├── README.md
-├── README_BUILD_GUIDE.md
-├── README_OOP_ARCHITECTURE.md
-├── README_PROJECT_GUIDE.md
-├── README_SYSTEM_ARCHITECTURE.md
-├── PROJECT_REPORT.md
-├── pom.xml
-├── dependency-reduced-pom.xml                # Generated by Maven Shade
-└── src/
-    ├── main/
-    │   ├── java/com/lbdrs/
-    │   │   ├── Main.java                          # Entry point
-    │   │   ├── db/DatabaseConnection.java         # Singleton
-    │   │   ├── model/
-    │   │   │   ├── User.java                      # Abstract base (Abstraction)
-    │   │   │   ├── Admin.java                     # Extends User (Inheritance)
-    │   │   │   ├── MedicalStaff.java              # Extends User (Inheritance)
-    │   │   │   ├── Donor.java                     # Entity (Encapsulation)
-    │   │   │   ├── DonationHistory.java           # Entity
-    │   │   │   └── Session.java                   # Auth session singleton
-    │   │   ├── dao/
-    │   │   │   ├── DonorRepository.java           # CRUD + ArrayList + HashMap
-    │   │   │   ├── DonationHistoryRepository.java # DAO Pattern
-    │   │   │   └── UserRepository.java            # BCrypt auth
-    │   │   ├── controller/
-    │   │   │   ├── LoginController.java           # MVC Controller
-    │   │   │   ├── DashboardController.java       # MVC Controller
-    │   │   │   ├── DonorFormController.java       # MVC Controller
-    │   │   │   └── DonationController.java        # MVC Controller
-    │   │   └── util/ValidationUtil.java
-    │   └── resources/
-    │       ├── db.properties                      # DB credentials
-    │       ├── db/schema.sql                      # DDL + seed data
-    │       ├── fxml/                              # JavaFX Views (MVC View)
-    │       │   ├── login.fxml
-    │       │   ├── dashboard.fxml
-    │       │   ├── donor_form.fxml
-    │       │   └── donation_history.fxml
-    │       └── css/style.css
-    └── test/java/com/lbdrs/model/
-        ├── DonorTest.java
-        ├── DonationHistoryTest.java
-        └── ValidationUtilTest.java
-
-# Build output (generated)
-target/
-├── classes/                                  # Compiled app/resources
-├── test-classes/                             # Compiled tests
-├── surefire-reports/                         # JUnit reports
-├── generated-sources/
-├── generated-test-sources/
-└── lbdrs-1.0-SNAPSHOT.jar
+|- pom.xml
+|- README.md
+|- README_BUILD_GUIDE.md
+|- README_OOP_ARCHITECTURE.md
+|- README_SYSTEM_ARCHITECTURE.md
+|- README_PROJECT_GUIDE.md
+|- README_VIVA_DEMO.md
+|- PROJECT_REPORT.md
+`- src/
+   |- main/
+   |  |- java/com/lbdrs/
+   |  |  |- Main.java
+   |  |  |- controller/
+   |  |  |  |- LoginController.java
+   |  |  |  |- DashboardController.java
+   |  |  |  |- DonorFormController.java
+   |  |  |  `- DonationController.java
+   |  |  |- dao/
+   |  |  |  |- UserRepository.java
+   |  |  |  |- DonorRepository.java
+   |  |  |  `- DonationHistoryRepository.java
+   |  |  |- db/
+   |  |  |  `- DatabaseConnection.java
+   |  |  |- model/
+   |  |  |  |- User.java
+   |  |  |  |- Admin.java
+   |  |  |  |- MedicalStaff.java
+   |  |  |  |- Donor.java
+   |  |  |  |- DonationHistory.java
+   |  |  |  `- Session.java
+   |  |  `- util/
+   |  |     `- ValidationUtil.java
+   |  `- resources/
+   |     |- db.properties
+   |     |- db/schema.sql
+   |     |- fxml/
+   |     |  |- login.fxml
+   |     |  |- dashboard.fxml
+   |     |  |- donor_form.fxml
+   |     |  `- donation_history.fxml
+   |     `- css/style.css
+   `- test/java/com/lbdrs/model/
+     |- DonorTest.java
+     |- DonationHistoryTest.java
+     `- ValidationUtilTest.java
 ```
 
----
+## Architecture and Design Patterns
 
-## Design Patterns Implemented
+- MVC: JavaFX Controllers + FXML Views + model classes
+- DAO: Repository classes isolate SQL and mapping logic
+- Singleton: `DatabaseConnection` and `Session`
+- OOP principles:
+  - Abstraction via abstract `User`
+  - Inheritance via `Admin` and `MedicalStaff`
+  - Encapsulation across model classes
 
-| Pattern | Class | Purpose |
-|---------|-------|---------|
-| Singleton | `DatabaseConnection` | One shared DB connection |
-| Singleton | `Session` | One auth session |
-| MVC | controller/ + fxml/ + model/ | Separation of concerns |
-| DAO | `DonorRepository`, `DonationHistoryRepository` | Abstracted DB access |
-| Inheritance | `Admin`, `MedicalStaff` extends `User` | Code reuse |
-| Abstraction | `User` (abstract class) | Common interface |
+## Functional Highlights
 
-## Data Structures Used
-
-| Structure | Location | Reason |
-|-----------|----------|--------|
-| `ArrayList<Donor>` | `DonorRepository.getAllDonors()` | Ordered iteration for table display |
-| `ArrayList<Donor>` | `DonorRepository.searchDonors()` | Dynamic result set |
-| `HashMap<Integer,Donor>` | `DonorRepository.getDonorMap()` | O(1) lookup by donor ID |
-
----
-
-## Features
-
-- **Login** with role-based access (Admin / Medical Staff)
-- **Register** new blood donors with full validation
-- **Search** donors by name, blood group, or location
-- **Filter** available donors by blood group
-- **Edit** donor details (Admin only)
-- **Delete** donors with confirmation (Admin only)
-- **Record** blood donations with date, status, and location
-- **View** full donation history per donor
-- **Eligibility check** (56-day rule enforced in model)
-- **BCrypt** password hashing for security
-- **Prepared statements** throughout (SQL injection prevention)
-
----
+- Role-based login and UI behavior
+- Donor CRUD with admin restrictions
+- Donor search and blood-group filtering
+- Donation history recording and retrieval
+- Eligibility logic in `Donor.isEligible()` (56-day interval)
+- Prepared statements in DAO layer for SQL safety
 
 ## License
 
-Academic project – University of Bedfordshire, 2026.
+Academic project for coursework submission (University of Bedfordshire, 2026).
